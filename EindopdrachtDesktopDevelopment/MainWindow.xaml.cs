@@ -1,4 +1,5 @@
 ﻿using EindopdrachtDesktopDevelopment.Models;
+using Google.Protobuf;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -79,23 +80,24 @@ namespace EindopdrachtDesktopDevelopment
             //fills listview with Gamers
         {
            string resultaat = db.GetGamers(gamers);
-            if (resultaat != "ok")
-            {
-                MessageBox.Show(resultaat);
-                return;
-            }
+            //if (resultaat != "ok")
+            //{
+            //    MessageBox.Show(resultaat);
+            //    return;
+            //}
         }
 
         private void PopulateGames()
         //fills listview with Games
         {
             string resultaat = db.GetGames(games);
-            if (resultaat != "ok")
-            {
-                MessageBox.Show(resultaat);
-                return;
-            }
+            //if (resultaat != "ok")
+            //{
+            //    MessageBox.Show(resultaat);
+            //    return;
+            //}
         }
+
         private void BtnGamerAdd_Click(object sender, RoutedEventArgs e)
         {
 
@@ -103,6 +105,23 @@ namespace EindopdrachtDesktopDevelopment
 
         private void BtnGamerDel_Click(object sender, RoutedEventArgs e)
         {
+            if (SelectedGamer == null)
+            {
+                MessageBox.Show("Kies eerst de gamer die je wilt verwijderen");
+                return;
+            }
+
+            MessageBox.Show($"{selectedGamer.ID} - {selectedGamer.Name}" );
+            string resultaat = db.DeleteGamer(selectedGamer.ID);
+            if (resultaat != DbConnection.OK)
+            {
+                MessageBox.Show(resultaat);
+                Gamers.Clear();
+                db.GetGamers(Gamers);
+            } else
+            {
+                Gamers.Remove(SelectedGamer);
+            }
 
         }
 
